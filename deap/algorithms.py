@@ -83,7 +83,7 @@ def varAnd(population, toolbox, cxpb, mutpb):
 
 
 def eaSimple(population, toolbox, cxpb, mutpb, ngen, stats=None,
-             halloffame=None, verbose=__debug__):
+             halloffame=None, verbose=__debug__, threshold=0.0):
     """This algorithm reproduce the simplest evolutionary algorithm as
     presented in chapter 7 of [Back2000]_.
 
@@ -157,9 +157,16 @@ def eaSimple(population, toolbox, cxpb, mutpb, ngen, stats=None,
     record = stats.compile(population) if stats else {}
     logbook.record(gen=0, nevals=len(invalid_ind), **record)
     if verbose:
-        print logbook.stream
+        print(logbook.stream)
 
     # Begin the generational process
+    '''
+        Added these variables to keep track of how many iterations the
+        max value has remained the same. If curr_max == prev_max, iters++.
+        If iters == threshold (and threshold > 0.0): break
+    '''
+    log_max = 0
+    iters = 0
     for gen in range(1, ngen + 1):
         # Select the next generation individuals
         offspring = toolbox.select(population, len(population))
@@ -183,8 +190,28 @@ def eaSimple(population, toolbox, cxpb, mutpb, ngen, stats=None,
         # Append the current generation statistics to the logbook
         record = stats.compile(population) if stats else {}
         logbook.record(gen=gen, nevals=len(invalid_ind), **record)
+
+        '''
+            Check the current max and compare it with the prev max.
+            Also determine if we're breaking early (threshold*ngen) < iters.
+                - That is, we have gone threshold*100% of the iterations
+                  without making progress, so we quit. 
+        '''
+        max_ = max(logbook.select("max"))
+        if threshold > 0.0:
+            if log_max < max_:
+                log_max = max_
+                iters = 0
+            else:
+                iters += 1
+            if iters >= (threshold * ngen):
+                break
+				
         if verbose:
-            print logbook.stream
+            print(logbook.stream)
+            print('iters: ' + str(iters) + '\tthreshold: ' + \
+				  str(threshold*ngen) + ' generations\tmax: ' + str(log_max))
+
 
     return population, logbook
 

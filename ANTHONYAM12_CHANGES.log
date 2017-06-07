@@ -1,0 +1,13 @@
+6/6/2017:
+	- Added a threshold parameter to the eaSimple aglorithm in algorithms.py
+		- This parameter allows for early stopping conditions in this algorithm
+		- The parameter should be passed as a float between 0.0 and 1.0 and should
+		  represent the fraction of generations (ngen) we want to carry on making 
+		  no progress before early exit
+		- That is, if we have the same max (or min) from our cost function for 
+		  threshold*ngen iterations, we break from the loop
+		- Added this to be able to set pretty high generations so I can 'use them
+		  if I need them'. If I get lucky and get the optimal solution right away
+		  then I only run for threshold*ngen iterations. Otherwise, the algorithm
+		  can run the whole, say 100,000, iterations if we're getting unlucky 
+		  selections/mutations
