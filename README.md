@@ -1,5 +1,8 @@
 # DEAP
 
+## DOCS
+http://deap.readthedocs.io/en/master/
+
 [![Build status](https://travis-ci.org/DEAP/deap.svg?branch=master)](https://travis-ci.org/DEAP/deap) [![Download](https://img.shields.io/pypi/dm/deap.svg)](https://pypi.python.org/pypi/deap) [![Join the chat at https://gitter.im/DEAP/deap](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/DEAP/deap?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 DEAP is a novel evolutionary computation framework for rapid prototyping and testing of 
